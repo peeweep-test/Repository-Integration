@@ -73,7 +73,7 @@ on:
         default: 'Project:integrated' #多个标签有', '隔开
       intergrationinfo:
         type: string
-        default: '包名 | 版本\n--  | --\ndde-api | 1.0.0'
+        default: "['包名 | 版本', '--  | --', 'dde-dock | [6.0.10](https://github.com/linuxdeepin/dde-dock/tree/6.0.10)']"
 
 jobs:
   issue2Project:
@@ -131,11 +131,23 @@ jobs:
             milestonestr = "${{ inputs.milestone }}"
             status = "${{ inputs.status }}"
 
-            intergrationinfo = "${{ inputs.intergrationinfo }}"
+            intergrationinfo = ""
+            if (Array.isArray(${{ inputs.intergrationinfo }})) {
+              intergrationinfo = ${{ inputs.intergrationinfo }}.join("\n")
+            }
+            console.log("intergrationinfo: ", intergrationinfo)
             testrepoaddr = "${{ inputs.testrepoaddr }}"
-            changelog = "${{ inputs.changelog }}"
+            changelog = ""
+            if (Array.isArray(${{ inputs.changelog }})) {
+              changelog = ${{ inputs.changelog }}.join("\n")
+            }
+            console.log("changelog: ", changelog)
             suggestion = "${{ inputs.suggestion }}"
-            influence = "${{ inputs.influence }}"
+            influence = ""
+            if (Array.isArray(${{ inputs.influence }})) {
+              influence = ${{ inputs.influence }}.join("\n")
+            }
+            console.log("influence: ", influence)
             extrainfo = "${{ inputs.extrainfo }}"
 
             core.debug(repoinfo, labels, assignees)
@@ -197,7 +209,7 @@ jobs:
                 }
 
                 //TODO: update issue labels and body?
-                /*let issuse_content = "### Package information | 软件包信息\n\n"
+                let issuse_content = "### Package information | 软件包信息\n\n"
                 issuse_content += intergrationinfo + "\n\n"
                 issuse_content += "### Package repository address | 软件包仓库地址\n\n"
                 issuse_content += testrepoaddr + "\n\n"
@@ -209,7 +221,7 @@ jobs:
                 issuse_content += influence + "\n\n"
                 issuse_content += "### ADDITIONAL INFORMATION | 额外补充\n\n"
                 issuse_content += extrainfo + "\n"
-                core.debug("update issue body: ", issuse_content)*/
+                core.debug("update issue body: ", issuse_content)
 
                 await github.rest.issues.update({
                   owner: owner,
