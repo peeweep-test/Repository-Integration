@@ -124,6 +124,7 @@ jobs:
           def check_tag_exsist(repo, tag):
               rawurl = requote_uri("https://api.github.com/repos/{repo}/git/ref/tags/{tag}".format(repo=repo, tag=tag))
               res = requests.get(rawurl.replace("+", "%2B"), headers=header)
+              print(res.content)
               if res.status_code != 200:
                   illegalTags.append({"repo": repo, "tag": tag})
               if repo in not_allowed_repo:
