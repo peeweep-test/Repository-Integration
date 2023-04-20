@@ -1,17 +1,35 @@
 # Required
 message: |
-  Integrated for 23 V23-Bata
+  Integrated for 23 V23-Beta
 # Not required, now default is V23-Beta
 milestone: V23-Beta
 # Required
 repos: 
   # Required
-  - repo: linuxdeepin/examplerepo
+  - repo: deepin-community/deepin-desktop-environment
     # Not required
-    tag: 5.11.22
+    tag: 2023.04.20
     # Not required
     order: 0
     # Not required, but need one of tag and tagsha info
     # When use tag info, intergration workflow will check repository tag and build tag version
     # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha: "f6140e328b72e9f0732e4b6f84f41a7f9732cb37"
+  - repo: linuxdeepin/dde-api-proxy
+    # Not required
+    tag: 1.0.5
+    # Not required
+    order: 0
+    # Not required, but need one of tag and tagsha info
+    # When use tag info, intergration workflow will check repository tag and build tag version
+    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
+    tagsha: "6f5b28b8b0e230493f55da2f10c2f7cf56ec7c89"
+  - repo: linuxdeepin/dde-polkit-agent
+    # Not required
+    tag: 6.0.3
+    # Not required
+    order: 0
+    # Not required, but need one of tag and tagsha info
+    # When use tag info, intergration workflow will check repository tag and build tag version
+    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
+    tagsha: "411bd06a0c1e20d6ee28aa525c40df9ab7ad2416"
