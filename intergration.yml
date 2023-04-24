@@ -2,12 +2,7 @@ message: |
   Integrated for V23-Beta libxcb
 milestone: V23-Beta
 repos: 
-  - repo: deepin-community/xcb-proto
+  - repo: deepin-community/deepin-desktop-environment
     tag: 
     order: 0
-    tagsha: "4c9a32a997b0bc9964cc0f165673a0e009983bf2"
-    
-  - repo: deepin-community/libxcb
-    tag: 
-    order: 0
-    tagsha: "428a62027d9f99a7cc75d5428460fb4e7d81ed88"
+    tagsha: "cfe5399ca7c6d6085792bf2c8a834cd681ae4640"
