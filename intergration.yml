@@ -1,5 +1,5 @@
 message: |
-  Integrated for V23-Beta libxcb
+  Integrated for V23-Beta deepin-desktop-environment
 milestone: V23-Beta
 repos: 
   - repo: deepin-community/deepin-desktop-environment
