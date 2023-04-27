@@ -1,17 +1,9 @@
 # Required
 message: |
-  Integrated for V23-Beta
-# Not required, now default is V23-Beta
+  Integrated for V23-Beta deepin-desktop-environment
 milestone: V23-Beta
-# Required
 repos: 
-  # Required
-  - repo: linuxdeepin/examplerepo
-    # Not required
-    tag: 5.11.22
-    # Not required
+  - repo: deepin-community/deepin-desktop-environment
+    tag: 
     order: 0
-    # Not required, but need one of tag and tagsha info
-    # When use tag info, intergration workflow will check repository tag and build tag version
-    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha: "ee1efc124398b888dc9f29c71ff58289ec0407fc"
