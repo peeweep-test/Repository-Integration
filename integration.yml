@@ -6,12 +6,31 @@ milestone: V23-Beta
 # Required
 repos: 
   # Required
-  - repo: linuxdeepin/examplerepo
+  - repo: linuxdeepin/util-dfm
     # Not required
-    tag: 5.11.22
+    tag: 1.2.9
     # Not required
     order: 0
     # Not required, but need one of tag and tagsha info
     # When use tag info, integration workflow will check repository tag and build tag version
     # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha: "205bb02df07187a2ae7995c2383c2a2a07a53738"
+  # Required
+  - repo: linuxdeepin/deepin-anything
+    # Not required
+    tag: 6.0.7
+    # Not required
+    order: 0
+    # Not required, but need one of tag and tagsha info
+    # When use tag info, integration workflow will check repository tag and build tag version
+    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
+    tagsha: "68640225fdeae0f4962d9115fcb1e64e2dde76da"
+  - repo: linuxdeepin/dde-file-manager
+    # Not required
+    tag: 6.0.17
+    # Not required
+    order: 0
+    # Not required, but need one of tag and tagsha info
+    # When use tag info, integration workflow will check repository tag and build tag version
+    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
+    tagsha: "7f837a8017dfad66af5ced9b8a2cda10d5856cac"
