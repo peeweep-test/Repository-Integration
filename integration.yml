@@ -2,7 +2,7 @@ message: |
   Integrated gspell
 milestone: V23-Beta
 repos: 
-  - repo: deepin-community/gspell
+  - repo: deepin-community/udisks2
     tag: 
     order: 0
-    tagsha: "a5975bfee70e0705664658fe8d0f7d25718e8bb0"
+    tagsha: "6da36b1b29105855d09f3f06924dd68b394e559e"
