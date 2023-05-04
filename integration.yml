@@ -1,17 +1,17 @@
 # Required
 message: |
-  Integrated for V23-Beta
+  Integrated deepin-kwin for V23-Beta
 # Not required, now default is V23-Beta
 milestone: V23-Beta
 # Required
 repos: 
   # Required
-  - repo: linuxdeepin/examplerepo
+  - repo: linuxdeepin/deepin-kwin
     # Not required
-    tag: 5.11.22
+    tag: 5.25.3
     # Not required
     order: 0
     # Not required, but need one of tag and tagsha info
     # When use tag info, integration workflow will check repository tag and build tag version
     # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha: "aafde18f591eb788b40c2a39f91161742f04789b"
