@@ -1,8 +1,8 @@
 message: |
-  Integrated gspell
+  Integrated xorg-server
 milestone: V23-Beta
 repos: 
-  - repo: deepin-community/udisks2
+  - repo: deepin-community/xorg-server
     tag: 
     order: 0
-    tagsha: "6da36b1b29105855d09f3f06924dd68b394e559e"
+    tagsha: "268082aea6ec96745afc8fde462d1f87f647791d"
