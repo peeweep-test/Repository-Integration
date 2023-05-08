@@ -5,13 +5,23 @@ message: |
 milestone: V23-Beta
 # Required
 repos: 
-  # Required
-  - repo: linuxdeepin/examplerepo
-    # Not required
-    tag: 5.11.22
-    # Not required
+  - repo: linuxdeepin/dtkcore
+    tag: 5.6.11
     order: 0
-    # Not required, but need one of tag and tagsha info
-    # When use tag info, integration workflow will check repository tag and build tag version
-    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha: "12d337dcd0d27a4db6caf16e2fbf2b285f76e2cb"
+  - repo: linuxdeepin/dtkgui
+    tag: 5.6.11
+    order: 0
+    tagsha: "dd10f593b7a0d051d3eefafb8205afae04c48a2d"
+  - repo: linuxdeepin/dtkwidget
+    tag: 5.6.11
+    order: 0
+    tagsha: "eb2fff404ff6d114f19effd4c4294905379ed867"
+  - repo: linuxdeepin/qt5integration
+    tag: 5.6.11
+    order: 0
+    tagsha: "e6e40b44c74853884542b5a06e93cf32bb1defe3"
+  - repo: linuxdeepin/qt5platform-plugins
+    tag: 5.6.11
+    order: 0
+    tagsha: "16ecfbff2f75378508b437870098ed401b1dd72c"
