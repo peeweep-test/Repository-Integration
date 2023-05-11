@@ -5,4 +5,4 @@ repos:
   - repo: deepin-community/pam
     tag: 
     order: 0
-    tagsha: "b45984219d62add0112d402d3138485cb1827468"
+    tagsha: "c849f81d8561b20608627fd55531ad853352a8dc"
