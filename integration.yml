@@ -1,8 +1,8 @@
 message: |
-  Integrated dde-printer
+  Integrated pam
 milestone: V23-Beta
 repos: 
-  - repo: linuxdeepin/dde-printer
-    tag: 0.9.19
+  - repo: deepin-community/pam
+    tag: 
     order: 0
-    tagsha: 
+    tagsha: "b45984219d62add0112d402d3138485cb1827468"
