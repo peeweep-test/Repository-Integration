@@ -1,17 +1,49 @@
-# Required
 message: |
-  Integrated for V23-Beta
-# Not required, now default is V23-Beta
+  Integrated dde related projects
 milestone: V23-Beta
-# Required
-repos: 
-  # Required
-  - repo: linuxdeepin/examplerepo
-    # Not required
-    tag: 5.11.22
-    # Not required
+repos:
+  - repo: linuxdeepin/dde-launcher
+    tag: 6.0.12
     order: 0
-    # Not required, but need one of tag and tagsha info
-    # When use tag info, integration workflow will check repository tag and build tag version
-    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
-    tagsha: "********************************"
+    tagsha:
+  - repo: linuxdeepin/dde-dock
+    tag: 6.0.16
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-control-center
+    tag: 6.0.20
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-appearance
+    tag: 1.1.0
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-session
+    tag: 1.1.4
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-daemon
+    tag: 6.0.17
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-api-proxy
+    tag: 1.0.7
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/startdde
+    tag: 6.0.7
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-network-core
+    tag: 2.0.8
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/default-settings
+    tag: 2023.05.12
+    order: 0
+    tagsha:
+  - repo: linuxdeepin/dde-application-manager
+    tag: 1.0.14
+    order: 0
+    tagsha:
+
