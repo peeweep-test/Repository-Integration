@@ -135,7 +135,10 @@ jobs:
           def set_output(name, value):
               output_file = os.environ.get("GITHUB_OUTPUT")
               with open(output_file, "a") as output:
-                  output.write(name + "=" + value + "\n")
+                  #output.write(name + "=" + value + "\n")
+                  output.write(name + "<<EOF\n")
+                  output.write(value)
+                  output.write('\nEOF\n')
 
           def read_changelog(repo, commitortag):
             rawurl = "https://api.github.com/repos/{repo}/contents/debian/changelog?ref={commit}".format(repo=repo, commit=commitortag)
