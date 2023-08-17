@@ -117,9 +117,14 @@ jobs:
             });
             core.setOutput('app_token', token)
 
+      - name: Download integration files
+        uses: actions/download-artifact@v3
+        with:
+          name: integration-archive-${{ github.event.number }}
+
       - name: Handle issue
         id: issue
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.4.1
         with:
           github-token: ${{ steps.deepin-bot.outputs.app_token }}
           script: |
@@ -131,23 +136,15 @@ jobs:
             assignees = "${{ inputs.assignees }}".split(", ")
             milestonestr = "${{ inputs.milestone }}"
             status = "${{ inputs.status }}"
-
-            integrationinfo = ""
-            if (Array.isArray(${{ inputs.integrationinfo }})) {
-              integrationinfo = ${{ inputs.integrationinfo }}.join("\n")
-            }
-            console.log("integrationinfo: ", integrationinfo)
             testrepoaddr = "${{ inputs.testrepoaddr }}"
-            changelog = ""
-            if (Array.isArray(${{ inputs.changelog }})) {
-              changelog = ${{ inputs.changelog }}.join("\n")
-            }
+
+            integrationinfo = fs.readFileSync('integration-${{ github.event.number }}-integrationinfo.md').toString()
+            console.log("integrationinfo: ", integrationinfo)
+
+            changelog = fs.readFileSync('integration-${{ github.event.number }}-changelog.md').toString()
             console.log("changelog: ", changelog)
             suggestion = "${{ inputs.suggestion }}"
-            influence = ""
-            if (Array.isArray(${{ inputs.influence }})) {
-              influence = ${{ inputs.influence }}.join("\n")
-            }
+            influence = fs.readFileSync('integration-${{ github.event.number }}-influence.md').toString()
             console.log("influence: ", influence)
             extrainfo = "${{ inputs.extrainfo }}"
 
