@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build_matrix: ${{ steps.parsec_integration.outputs.build_matrix }}
+      all_build_task: ${{ steps.parsec_integration.outputs.all_build_task }}
       deploy: ${{ steps.illegal_repo_tags.outputs.DEPLOY }}
       integration_message: ${{ steps.parsec_integration.outputs.integration_message }}
       component: ${{ steps.illegal_repo_tags.outputs.component }}

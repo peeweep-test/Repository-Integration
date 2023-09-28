@@ -16,13 +16,13 @@ env:
 
 jobs:
   parsec_integration:
-    uses: deepin-community/Repository-Integration/.github/workflows/01-parsec-integration.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/01-parsec-integration.yml@master
 
   ouput_message:
     name: output integration
     needs: parsec_integration
     if: ${{ github.event.pull_request.head.sha }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-integration-output.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-integration-output.yml@master
 
   build_project_prepare:
     name: build project prepare
@@ -37,7 +37,7 @@ jobs:
           set -x
           result=$(curl -u golf66:$OSCPASS "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC/_meta"|grep "unknown_project")
           if [ "$result" != "" ];then
-            curl -o meta.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-proj-meta.tpl
+            curl -o meta.xml https://raw.githubusercontent.com/peeweep-test/Repository-Integration/master/.github/workflows/obs-proj-meta.tpl
             sed -i "s#TOPIC#${TOPIC}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC/_meta"
           fi
@@ -95,7 +95,7 @@ jobs:
       always() && !cancelled() &&
       (needs.parsec_integration.result == 'success') && (needs.ouput_message.result != 'failure' ) &&
       (needs.builds.result == 'success' || needs.builds.result == 'skipped')
-    uses: deepin-community/Repository-Integration/.github/workflows/issue-project-manager.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/issue-project-manager.yml@master
     secrets: inherit
     with:
       repo: linuxdeepin/developer-center
@@ -111,13 +111,30 @@ jobs:
       influence: ${{ needs.parsec_integration.outputs.influence }}
       testrepoaddr: "    deb [trusted=yes] https://ci.deepin.com/repo/obs/deepin:/CI:/TestingIntegration:/test-integration-pr-${{ github.event.number }}/testing/ ./"
 
+  pass_integration:
+    name: pass integration
+    needs:
+      - parsec_integration
+      - ouput_message
+      - build_project_prepare
+      - create_issue_link_project
+    uses: deepin-community/Repository-Integration/.github/workflows/04-auto-test.yml@master
+    if: |
+      always() && !cancelled() &&
+      (needs.create_issue_link_project.result == 'success')
+    with:
+      topic: test-integration-pr-${{ github.event.number }}
+      packages: ${{ needs.parsec_integration.outputs.all_build_task }}
+      deploy: ${{ needs.parsec_integration.outputs.deploy }}
+
   # merge finished and success, closing this pr
   close-pull-request:
     name: close this pull request
     needs:
       - parsec_integration
+      - pass_integration
     if: always() && !cancelled()
-    uses: deepin-community/Repository-Integration/.github/workflows/06-deployed.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/06-deployed.yml@master
     secrets: inherit
     with:
       integrations: ${{ needs.parsec_integration.outputs.all_build_task }}
@@ -132,7 +149,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_0) }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-build-obs.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-build-obs.yml@master
     secrets: inherit
     with:
       repo: ${{ matrix.payload.repo }}
