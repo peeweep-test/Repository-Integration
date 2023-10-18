@@ -75,7 +75,7 @@ jobs:
           if [ "$COMPONENT" != "main" ]; then
             result=$(curl -u golf66:$OSCPASS "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC:$COMPONENT/_meta"|grep "unknown_project")
             if [ "$result" != "" ];then
-              curl -o meta1.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-proj-component-meta.tpl
+              curl -o meta1.xml https://raw.githubusercontent.com/peeweep-test/Repository-Integration/master/.github/workflows/obs-proj-component-meta.tpl
               sed -i "s#TOPIC#${TOPIC}#g" meta1.xml
               sed -i "s#COMPONENT#${COMPONENT}#g" meta1.xml
               curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta1.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC:$COMPONENT/_meta"
@@ -126,11 +126,12 @@ jobs:
 
           curl -o meta.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-pkg-meta.tpl
           sed -i "s#PKGNAME#${pkgname}#g" meta.xml
-          sed -i "s#Testing:COMPONENT#CI:TestingIntegration:${TOPIC}#g" meta.xml
           if [ "$COMPONENT" = "main" ]; then
+            sed -i "s#Testing:COMPONENT#CI:TestingIntegration:${TOPIC}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:${TOPIC}/$pkgname/_meta"
             osc co deepin:CI:TestingIntegration:${TOPIC}/${pkgname} && cd $_
           else
+            sed -i "s#Testing:COMPONENT#CI:TestingIntegration:${TOPIC}:${COMPONENT}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/$pkgname/_meta"
             osc co deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/${pkgname} && cd $_
           fi
