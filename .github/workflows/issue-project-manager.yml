@@ -115,6 +115,7 @@ jobs:
               type: "installation",
               installationId: app_installation.data.id
             });
+            console.log("github token:", token)
             core.setOutput('app_token', token)
 
       - name: Download integration files
