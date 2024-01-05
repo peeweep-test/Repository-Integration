@@ -5,6 +5,6 @@ message: |
 milestone: V23-Beta3
 # Required
 repos: 
-  # Required
+  # Require
   - repo: deepin-community/cppcheck
     tagsha: "1c849dfba2464ee1918bce7647cbcbad2a7677d7"
