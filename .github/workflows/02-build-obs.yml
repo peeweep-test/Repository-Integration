@@ -47,6 +47,7 @@ jobs:
     outputs:
       pkgname: ${{ steps.pkgname.outputs.pkgname }}
       tagsha: ${{ steps.tagsha.outputs.tagsha }}
+      targeturl: ${{ steps.build.outputs.targeturl }}
     steps:
       - name: Print Environment
         run: export
@@ -75,7 +76,7 @@ jobs:
           if [ "$COMPONENT" != "main" ]; then
             result=$(curl -u golf66:$OSCPASS "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC:$COMPONENT/_meta"|grep "unknown_project")
             if [ "$result" != "" ];then
-              curl -o meta1.xml https://raw.githubusercontent.com/peeweep-test/Repository-Integration/master/.github/workflows/obs-proj-component-meta.tpl
+              curl -o meta1.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-proj-component-meta.tpl
               sed -i "s#TOPIC#${TOPIC}#g" meta1.xml
               sed -i "s#COMPONENT#${COMPONENT}#g" meta1.xml
               curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta1.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC:$COMPONENT/_meta"
@@ -117,6 +118,7 @@ jobs:
           echo "tagsha=$TAGSHA" >> $GITHUB_OUTPUT
 
       - name: Trigger build
+        id: build
         run: |
           set -x
           mkdir -p ~/.config/osc
@@ -126,15 +128,19 @@ jobs:
 
           curl -o meta.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-pkg-meta.tpl
           sed -i "s#PKGNAME#${pkgname}#g" meta.xml
+          targeturl="https://build.deepin.com/project/show/deepin:CI:TestingIntegration:${TOPIC}"
           if [ "$COMPONENT" = "main" ]; then
             sed -i "s#Testing:COMPONENT#CI:TestingIntegration:${TOPIC}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:${TOPIC}/$pkgname/_meta"
             osc co deepin:CI:TestingIntegration:${TOPIC}/${pkgname} && cd $_
+            targeturl="https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${TOPIC}/$pkgname/testing/"
           else
             sed -i "s#Testing:COMPONENT#CI:TestingIntegration:${TOPIC}:${COMPONENT}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/$pkgname/_meta"
             osc co deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/${pkgname} && cd $_
+            targeturl="https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/$pkgname/testing/"
           fi
+          echo "targeturl=$targeturl" >> $GITHUB_OUTPUT
 
           needbuild=true
           if [ -f _branch_request ];then
@@ -167,5 +173,5 @@ jobs:
           token: ${{ github.token }}
           status: pending
           context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
-          targetUrl: "https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${{ inputs.topic }}/${{ needs.build.outputs.pkgname }}/testing/${{ matrix.arch }}"
+          targetUrl: "${{ needs.build.outputs.targeturl }}/${{ matrix.arch }}"
           sha: ${{ github.event.pull_request.head.sha }}
