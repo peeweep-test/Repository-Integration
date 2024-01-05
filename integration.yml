@@ -6,5 +6,5 @@ milestone: V23-Beta3
 # Required
 repos: 
   # Required
-  - repo: deepin-community/ci-test
-    tagsha: "27590d64062129fc79ec89881c0ae330b5596126"
+  - repo: deepin-community/cppcheck
+    tagsha: "1c849dfba2464ee1918bce7647cbcbad2a7677d7"
