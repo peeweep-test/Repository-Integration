@@ -183,7 +183,7 @@ jobs:
           token: ${{ github.token }}
           checkName: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          timeoutSeconds: 3600 #1h,超时后可以/retest 重试
+          timeoutSeconds: 100 #1h,超时后可以/retest 重试
 
       - name: Do something with a build time out
         if: steps.wait-for-build.outputs.conclusion == 'timed_out'
