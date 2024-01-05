@@ -7,8 +7,4 @@ milestone: V23-Beta3
 repos: 
   # Required
   - repo: deepin-community/ci-test
-    # Not required
-    # Not required, but need one of tag and tagsha info
-    # When use tag info, integration workflow will check repository tag and build tag version
-    # When use tagsha info, interation workflow will build tagsha version, It doesn't matter whether the tag exists.
     tagsha: "27590d64062129fc79ec89881c0ae330b5596126"
