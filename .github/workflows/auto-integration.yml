@@ -101,13 +101,13 @@ jobs:
       (needs.build_community.result == 'success' || needs.build_community.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for status checks
-        uses: WyriHaximus/github-action-wait-for-status@v2
+      - name: wait status checks
+        uses: poseidon/wait-for-status-checks@v0.3.0
         with:
-          ignoreActions: "OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
-          checkInterval: 13
-        env:
-          GITHUB_TOKEN: "${{ github.token }}"
+          ignore: "tide,OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          interval: 10
+          timeout: 36000s
+          token: ${{ github.token }}
 
   create_issue_link_project:
     name: create issue and link project
