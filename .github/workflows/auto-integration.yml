@@ -85,7 +85,7 @@ jobs:
             core.setOutput('projectItemID', projectItemID)
 
   wait_for_status_checks:
-    name: Wait for status checks
+    name: wait_for_status_checks
     needs:
       - parsec_integration
       - ouput_message
@@ -101,10 +101,10 @@ jobs:
       (needs.build_community.result == 'success' || needs.build_community.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
-      - name: wait status checks
-        uses: WyriHaximus/github-action-wait-for-status@master
+      - name: Wait for status checks
+        uses: WyriHaximus/github-action-wait-for-status@v2
         with:
-          ignoreActions: "tide,OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          ignoreActions: "OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
           checkInterval: 13
         env:
           GITHUB_TOKEN: "${{ github.token }}"
