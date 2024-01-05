@@ -166,6 +166,14 @@ jobs:
         with:
           token: ${{ github.token }}
           status: pending
-          context: "${{ steps.pkgname.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
-          targetUrl: "https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${{ inputs.topic }}/${{ steps.pkgname.outputs.pkgname }}/testing/${{ matrix.arch }}"
+          context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
+          targetUrl: "https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${{ inputs.topic }}/${{ needs.build.outputs.pkgname }}/testing/${{ matrix.arch }}"
           sha: ${{ github.event.pull_request.head.sha }}
+      - name: 'Wait for status checks'
+        id: waitforstatuschecks
+        uses: WyriHaximus/github-action-wait-for-status@master
+        with:
+          ignoreActions: "tide,OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
