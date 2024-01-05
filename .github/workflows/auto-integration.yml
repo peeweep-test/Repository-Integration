@@ -84,6 +84,25 @@ jobs:
             core.setOutput('issueid', issueid)
             core.setOutput('projectItemID', projectItemID)
 
+  wait_for_status_checks:
+    name: Wait for status checks
+    needs:
+      - parsec_integration
+      - ouput_message
+      - build_project_prepare
+      - build_main
+      - build_dde
+      - build_community
+    runs-on: ubuntu-latest
+    steps:
+      - name: wait status checks
+        uses: WyriHaximus/github-action-wait-for-status@master
+        with:
+          ignoreActions: "tide,OBS: deepin_develop/x86_64,OBS: deepin_develop/aarch64" ## Note that these names are the human readable names use as status on commits, and show up as status checks on PRs.
+          checkInterval: 13
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+
   create_issue_link_project:
     name: create issue and link project
     needs:
@@ -93,12 +112,14 @@ jobs:
       - build_main
       - build_dde
       - build_community
+      - wait_for_status_checks
     if: |
       always() && !cancelled() &&
       (needs.parsec_integration.result == 'success') && (needs.ouput_message.result != 'failure' ) &&
       (needs.build_main.result == 'success' || needs.build_main.result == 'skipped') &&
       (needs.build_dde.result == 'success' || needs.build_dde.result == 'skipped') &&
-      (needs.build_community.result == 'success' || needs.build_community.result == 'skipped')
+      (needs.build_community.result == 'success' || needs.build_community.result == 'skipped') &&
+      needs.wait_for_status_checks.result == 'success'
     uses: peeweep-test/Repository-Integration/.github/workflows/issue-project-manager.yml@master
     secrets: inherit
     with:
