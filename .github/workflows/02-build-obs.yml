@@ -173,7 +173,7 @@ jobs:
           token: ${{ github.token }}
           status: pending
           context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
-          targetUrl: "${{ needs.build.outputs.targeturl }}/${{ matrix.arch }}"
+          targetUrl: "${{ needs.build.outputs.targeturl }}${{ matrix.arch }}"
           sha: ${{ github.event.pull_request.head.sha }}
 
       - name: Wait for build to succeed
@@ -183,7 +183,7 @@ jobs:
           token: ${{ github.token }}
           checkName: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          timeoutSeconds: 100 #1h,超时后可以/retest 重试
+          timeoutSeconds: 3600 #1h,超时后可以/retest 重试
 
       - name: Do something with a build time out
         if: steps.wait-for-build.outputs.conclusion == 'timed_out'
@@ -200,7 +200,7 @@ jobs:
             osc co deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/${pkgname} && cd $_
           fi
 
-          timeouturl="${{ needs.build.outputs.targeturl }}/${{ matrix.arch }}"
+          timeouturl="${{ needs.build.outputs.targeturl }}${{ matrix.arch }}"
           description="wait build complete timeout"
           status="pending"
           buildresult=$(osc results -a ${ARCH} -r testing |awk '{print $3}')
@@ -228,7 +228,7 @@ jobs:
           context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
           targetUrl: ${{ steps.wait_time_out.outputs.timeouturl }}
           sha: ${{ github.event.pull_request.head.sha }}
-          description: ${{ steps.wait_time_out.outputs.timeouturl }}
+          description: ${{ steps.wait_time_out.outputs.description }}
 
       - name: report build error at action
         if: steps.wait_time_out.outputs.status != 'success' || steps.wait-for-build.outputs.conclusion == 'failure'
