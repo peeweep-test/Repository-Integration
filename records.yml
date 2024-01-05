@@ -31,6 +31,9 @@ records:
     deepin-community/ceph:
         date: '2023-10-07'
         pr: 349
+    deepin-community/ci-test:
+        date: '2024-01-05'
+        pr: 82
     deepin-community/courier-authlib:
         date: '2023-10-07'
         pr: 349
