@@ -175,3 +175,50 @@ jobs:
           context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
           targetUrl: "${{ needs.build.outputs.targeturl }}/${{ matrix.arch }}"
           sha: ${{ github.event.pull_request.head.sha }}
+
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.1.0
+        id: wait-for-build
+        with:
+          token: ${{ github.token }}
+          checkName: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          timeoutSeconds: 3600 #1h,超时后可以/retest 重试
+      
+      - name: Do something with a build time out
+        if: steps.wait-for-build.outputs.conclusion == 'timed_out'
+        id: wait_time_out
+        run: |
+          set -x
+          sudo apt-get update && sudo apt install -y osc
+          mkdir -p ~/.config/osc
+          echo "${{ secrets.OSCRC }}" > ~/.config/osc/oscrc
+          pkgname="${{ needs.build.outputs.pkgname }}"
+          if [ "$COMPONENT" = "main" ]; then
+            osc co deepin:CI:TestingIntegration:${TOPIC}/${pkgname} && cd $_
+          else
+            osc co deepin:CI:TestingIntegration:${TOPIC}:${COMPONENT}/${pkgname} && cd $_
+          fi
+
+          excluded=false
+          if [ -n $(osc buildinfo testing ${ARCH} |grep "<error>excluded</error>") ]; then
+            echo "${ARCH} build excluded"
+            excluded=true
+          fi
+          echo "excluded=$excluded" >> $GITHUB_OUTPUT
+      
+      - name: Set exclude build status as success
+        if: steps.wait_time_out.outputs.excluded == 'true'
+        uses: myrotvorets/set-commit-status-action@master
+        with:
+          token: ${{ github.token }}
+          status: success
+          context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
+          targetUrl: ""
+          sha: ${{ github.event.pull_request.head.sha }}
+          description: "build excluded"
+
+      - name: report build error at action
+        if: steps.wait-for-build.outputs.conclusion == 'failure'
+        run: |
+          exit -1
