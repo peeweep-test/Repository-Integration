@@ -168,3 +168,4 @@ jobs:
           status: pending
           context: "${{ steps.pkgname.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
           targetUrl: "https://build.deepin.com/package/live_build_log/deepin:CI:TestingIntegration:${{ inputs.topic }}/${{ steps.pkgname.outputs.pkgname }}/testing/${{ matrix.arch }}"
+          sha: ${{ github.event.pull_request.head.sha }}
