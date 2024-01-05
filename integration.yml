@@ -1,7 +1,7 @@
 # Required
 message: |
   Integrated for V23-Beta3
-# Not required, now default is V23
+# Not required, now default is V23 
 milestone: V23-Beta3
 # Required
 repos: 
