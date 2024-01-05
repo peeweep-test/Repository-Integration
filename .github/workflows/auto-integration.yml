@@ -93,6 +93,12 @@ jobs:
       - build_main
       - build_dde
       - build_community
+    if: |
+      always() && !cancelled() &&
+      (needs.parsec_integration.result == 'success') && (needs.ouput_message.result != 'failure' ) &&
+      (needs.build_main.result == 'success' || needs.build_main.result == 'skipped') &&
+      (needs.build_dde.result == 'success' || needs.build_dde.result == 'skipped') &&
+      (needs.build_community.result == 'success' || needs.build_community.result == 'skipped')
     runs-on: ubuntu-latest
     steps:
       - name: wait status checks
