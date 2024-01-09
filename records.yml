@@ -199,6 +199,9 @@ records:
     deepin-community/libstrophe:
         date: '2023-10-07'
         pr: 349
+    deepin-community/libtpms:
+        date: '2024-01-09'
+        pr: 83
     deepin-community/linux-atm:
         date: '2023-10-07'
         pr: 349
