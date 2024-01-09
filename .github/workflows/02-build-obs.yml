@@ -181,7 +181,7 @@ jobs:
         id: wait-for-build
         with:
           token: ${{ github.token }}
-          checkName: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
+          checkName: "${{ needs.build.outputs.pkgname }}-${{ matrix.arch }}-testing-repository-building"
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           timeoutSeconds: 3600 #1h,超时后可以/retest 重试
 
@@ -225,7 +225,7 @@ jobs:
         with:
           token: ${{ github.token }}
           status: ${{ steps.wait_time_out.outputs.status }}
-          context: "${{ needs.build.outputs.pkgname }} ${{ matrix.arch }} testing repository building"
+          context: "${{ needs.build.outputs.pkgname }}-${{ matrix.arch }}-testing-repository-building"
           targetUrl: ${{ steps.wait_time_out.outputs.timeouturl }}
           sha: ${{ github.event.pull_request.head.sha }}
           description: ${{ steps.wait_time_out.outputs.description }}
