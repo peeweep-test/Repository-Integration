@@ -395,6 +395,49 @@ jobs:
               }
             }
 
+      - name: Notify the author
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ steps.deepin-bot.outputs.app_token }}
+          script: |
+            const BOT_NAME = "IntegrationProjector Notify the author"
+            const COMMENT_HEAD = "**" + BOT_NAME + "**\n"
+            title = "${{ inputs.title }}"
+            const regex = /by\s+(\w+)/
+            const match = title.match(regex)
+            const author = match ? match[1] : ''
+            if (author != '') {
+              let COMMENT_BODY = ""
+              COMMENT_BODY += "@" + author + ": Integrated issue updated"
+              issueid = "${{ steps.issue.outputs.issueid }}"
+              repoinfo = "${{ inputs.repo }}".split('/')
+              owner = repoinfo[0]
+              repo = repoinfo[1]
+
+              const response = await github.rest.issues.listComments({
+                owner: owner,
+                repo: repo,
+                issue_number: issueid
+              })
+              const reg = new RegExp("\\*+" + BOT_NAME + "\\*+")
+              BotComment= response.data.find(comment => comment.body.match(reg))
+              if (BotComment) {
+                await github.rest.issues.updateComment({
+                    comment_id: BotComment.id,
+                    owner: owner,
+                    repo: repo,
+                    body: COMMENT_HEAD + COMMENT_BODY
+                })
+              } else {
+                await github.rest.issues.createComment({
+                    issue_number: issueid,
+                    owner: owner,
+                    repo: repo,
+                    body: COMMENT_HEAD + COMMENT_BODY
+                })
+              }
+            }
+
       - name: Link integration pr to issue
         uses: actions/github-script@v6
         with:
