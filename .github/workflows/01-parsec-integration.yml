@@ -198,7 +198,7 @@ jobs:
             return component
 
           try:
-              components = ["main", "dde", "community"]
+              components = ["main", "dde", "community", "commercial"]
               allBuildTasks = [{"component": j,"data":{"payload": []}} for j in components]
               data = read_integration()
 
