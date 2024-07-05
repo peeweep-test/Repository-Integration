@@ -167,7 +167,7 @@ jobs:
             if [ "$COMPONENT" = "commercial" ]; then
               echo "commercial package, need use private git ssh address!!!"
               new_content='    <param name="url">$GITADDR</param>'
-              sed -i "3c ${new_content}" _service.xml
+              sed -i "3c ${new_content}" _service
               echo "commercial package, disable build source!!!"
               echo "exec dpkg-buildpackage -us -uc --build=any,all  \"\$@\"" > build.script
               curl -X PUT -u golf66:$OSCPASS -d @build.script -s "$uploadurl/build.script"

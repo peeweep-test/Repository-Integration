@@ -198,7 +198,7 @@ jobs:
             return component
 
           try:
-              components = ["main", "dde", "community"]
+              components = ["main", "dde", "community", "commercial"]
               allBuildTasks = [{"component": j,"data":{"payload": []}} for j in components]
               data = read_integration()
 
@@ -222,8 +222,8 @@ jobs:
                   component_index = 1
                 if component == "community":
                   component_index = 2
-                  if component == "commercial":
-                    component_index = 3
+                if component == "commercial":
+                  component_index = 3
                 print("component: %s" % component)
                 tagsha = repo.get('tagsha', "")
                 tag = repo.get('tag', "")

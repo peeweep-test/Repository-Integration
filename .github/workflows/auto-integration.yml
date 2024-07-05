@@ -16,13 +16,13 @@ env:
 
 jobs:
   parsec_integration:
-    uses: deepin-community/Repository-Integration/.github/workflows/01-parsec-integration.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/01-parsec-integration.yml@master
 
   ouput_message:
     name: output integration
     needs: parsec_integration
     if: ${{ github.event.pull_request.head.sha }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-integration-output.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-integration-output.yml@master
 
   build_project_prepare:
     name: build project prepare
@@ -37,7 +37,7 @@ jobs:
           set -x
           result=$(curl -u golf66:$OSCPASS "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC/_meta"|grep "unknown_project")
           if [ "$result" != "" ];then
-            curl -o meta.xml https://raw.githubusercontent.com/deepin-community/Repository-Integration/master/.github/workflows/obs-proj-meta.tpl
+            curl -o meta.xml https://raw.githubusercontent.com/peeweep-test/Repository-Integration/master/.github/workflows/obs-proj-meta.tpl
             sed -i "s#TOPIC#${TOPIC}#g" meta.xml
             curl -X PUT -u golf66:$OSCPASS -H "Content-type: text/xml" -d @meta.xml "https://build.deepin.com/source/deepin:CI:TestingIntegration:$TOPIC/_meta"
           fi
@@ -184,7 +184,7 @@ jobs:
       (needs.build_community.result == 'success' || needs.build_community.result == 'skipped') &&
       (needs.build_commercial.result == 'success' || needs.build_commercial.result == 'skipped') &&
       needs.wait_build_pending_status.result == 'success'
-    uses: deepin-community/Repository-Integration/.github/workflows/issue-project-manager.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/issue-project-manager.yml@master
     secrets: inherit
     with:
       repo: linuxdeepin/developer-center
@@ -207,7 +207,7 @@ jobs:
       - ouput_message
       - build_project_prepare
       - create_issue_link_project
-    uses: deepin-community/Repository-Integration/.github/workflows/04-auto-test.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/04-auto-test.yml@master
     if: |
       always() && !cancelled() &&
       (needs.create_issue_link_project.result == 'success')
@@ -225,7 +225,7 @@ jobs:
     if: |
       always() && !cancelled() &&
       (needs.pass_integration.result == 'success')
-    uses: deepin-community/Repository-Integration/.github/workflows/06-deployed.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/06-deployed.yml@master
     secrets: inherit
     with:
       integrations: ${{ needs.parsec_integration.outputs.all_build_task }}
@@ -240,7 +240,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_main) }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-build-obs.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-build-obs.yml@master
     secrets: inherit
     with:
       repo: ${{ matrix.payload.repo }}
@@ -257,7 +257,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_dde) }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-build-obs.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-build-obs.yml@master
     secrets: inherit
     with:
       repo: ${{ matrix.payload.repo }}
@@ -275,7 +275,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_community) }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-build-obs.yml@master
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-build-obs.yml@master
     secrets: inherit
     with:
       repo: ${{ matrix.payload.repo }}
@@ -292,8 +292,8 @@ jobs:
       - build_project_prepare
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_ccommercial) }}
-    uses: deepin-community/Repository-Integration/.github/workflows/02-build-obs.yml@master
+      matrix: ${{ fromJson(needs.parsec_integration.outputs.build_matrix_commercial) }}
+    uses: peeweep-test/Repository-Integration/.github/workflows/02-build-obs.yml@master
     secrets: inherit
     with:
       repo: ${{ matrix.payload.repo }}
